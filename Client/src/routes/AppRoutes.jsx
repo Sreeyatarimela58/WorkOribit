@@ -1,6 +1,6 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
-import Login from "../pages/auth/Login.jsx";
+import Login from "../pages/auth/LoginSignup.jsx";
 // import AdminDashboard from "../pages/admin/AdminDashboard.jsx";
 // import ManagerDashboard from "../pages/manager/ManagerDashboard.jsx";
 // import EmployeeDashboard from "../pages/employee/EmployeeDashboard.jsx";

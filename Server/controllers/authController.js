@@ -88,7 +88,7 @@ export const seedAdmin = async (req, res) => {
 
     const passwordHash = await bcrypt.hash("admin123", 10);
     const admin = await User.create({
-      email: "admin@peoplehub.com",
+      email: "admin@workorbit.com",
       passwordHash,
       role: "admin",
     });

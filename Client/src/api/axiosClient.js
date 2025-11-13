@@ -2,7 +2,7 @@ import axios from "axios";
 import useAuthStore from "../store/authStore";
 
 const instance = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || "http://localhost:5000/api",
+  baseURL: import.meta.env.VITE_API_URL || "https://urban-spoon-7vwpv6r77jq92xr5-5000.app.github.dev/api",
 });
 
 instance.interceptors.request.use((config) => {

@@ -30,12 +30,12 @@ const router = express.Router();
  *           schema:
  *             type: object
  *             properties:
- *               name:
- *                 type: string
  *               email:
  *                 type: string
  *               password:
  *                 type: string
+ *               role:
+ *                type: string
  *     responses:
  *       201:
  *         description: User created
