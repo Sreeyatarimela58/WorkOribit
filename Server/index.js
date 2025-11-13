@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import connectDB from "./config/db.js";
+import setupSwagger from "./swagger.js";
 
 //Routes imports
 import authRoutes from "./routes/authRoutes.js";
@@ -19,6 +20,9 @@ connectDB();
 
 // app.use(cors());
 app.use(express.json());
+
+// Swagger UI
+setupSwagger(app);
 
 app.get("/api/health", (req, res) => res.json({ status: "OK" }));
 
