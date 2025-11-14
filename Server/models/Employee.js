@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-
+import { DEPARTMENTS } from "../utils/departments.js";
 const employeeSchema = new mongoose.Schema(
   {
     firstName: { type: String, required: true },
@@ -7,9 +7,13 @@ const employeeSchema = new mongoose.Schema(
     displayName: { type: String, index: true },
     email: { type: String, unique: true, required: true },
     phone: { type: String },
-    departmentId: { type: mongoose.Schema.Types.ObjectId, ref: "Department" },
+    department: {
+      type: String,
+      enum: DEPARTMENTS,      // ⬅ HERE - Enforce enum
+      required: false,
+    },
     managerId: { type: mongoose.Schema.Types.ObjectId, ref: "Employee" },
-    roleTitle: { type: String },
+    jobTitle: { type: String },
     location: { type: String },
     skills: [{ type: String }],
     bio: { type: String },
@@ -20,20 +24,22 @@ const employeeSchema = new mongoose.Schema(
         uploadedAt: Date,
       },
     ],
+    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
   },
+
   { timestamps: true }
 );
 
 // Text search for directory
 employeeSchema.index({
   displayName: "text",
-  roleTitle: "text",
+  jobTitle: "text",
   skills: "text",
   bio: "text",
 });
 
 // Common filter indexes
-employeeSchema.index({ departmentId: 1, location: 1 });
+employeeSchema.index({ department: 1, location: 1 });
 employeeSchema.index({ managerId: 1 });
 
 const Employee = mongoose.model("Employee", employeeSchema);
