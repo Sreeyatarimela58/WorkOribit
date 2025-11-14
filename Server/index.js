@@ -6,7 +6,7 @@ import setupSwagger from "./swagger.js";
 
 //Routes imports
 import authRoutes from "./routes/authRoutes.js";
-// import employeeRoutes from "./routes/employeeRoutes.js";
+import employeeRoutes from "./routes/employeeRoutes.js";
 // import departmentRoutes from "./routes/departmentRoutes.js";
 // import checklistRoutes from "./routes/checklistRoutes.js";
 // import onboardingRoutes from "./routes/onboardingRoutes.js";
@@ -27,7 +27,7 @@ setupSwagger(app);
 app.get("/api/health", (req, res) => res.json({ status: "OK" }));
 
 app.use("/api/auth", authRoutes);
-// app.use("/api/employees", employeeRoutes);
+app.use("/api/employees", employeeRoutes);
 // app.use("/api/departments", departmentRoutes);
 // app.use("/api/checklists", checklistRoutes);
 // app.use("/api/onboarding", onboardingRoutes);
