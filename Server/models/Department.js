@@ -1,14 +1,16 @@
-import mongoose from "mongoose";
+// This model in currently inactive and will be added in future.
 
-const departmentSchema = new mongoose.Schema(
-  {
-    name: { type: String, required: true, unique: true },
-    managerId: { type: mongoose.Schema.Types.ObjectId, ref: "Employee" },
-  },
-  { timestamps: true }
-);
+// import mongoose from "mongoose";
 
-departmentSchema.index({ name: 1 });
+// const departmentSchema = new mongoose.Schema(
+//   {
+//     name: { type: String, required: true, unique: true },
+//     managerId: { type: mongoose.Schema.Types.ObjectId, ref: "Employee" },
+//   },
+//   { timestamps: true }
+// );
 
-const Department = mongoose.model("Department", departmentSchema);
-export default Department;
+// departmentSchema.index({ name: 1 });
+
+// const Department = mongoose.model("Department", departmentSchema);
+// export default Department;
