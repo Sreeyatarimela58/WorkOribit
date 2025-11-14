@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import Login from "../pages/auth/LoginSignup.jsx";
-// import AdminDashboard from "../pages/admin/AdminDashboard.jsx";
+import EmployeeManagement from "../pages/admin/EmployeeManagement.jsx";
 // import ManagerDashboard from "../pages/manager/ManagerDashboard.jsx";
 // import EmployeeDashboard from "../pages/employee/EmployeeDashboard.jsx";
 // import Directory from "../pages/shared/Directory.jsx";
@@ -13,15 +13,15 @@ export default function AppRoutes() {
       <Routes>
         <Route path="/login" element={<Login />} />
 
-        {/* <Route
-          path="/admin/*"
+        {<Route
+          path="/admin/employees"
           element={
             <PrivateRoute roles={["admin"]}>
-              <AdminDashboard />
+              <EmployeeManagement />
             </PrivateRoute>
           }
         />
-
+        /* 
         <Route
           path="/manager/*"
           element={
