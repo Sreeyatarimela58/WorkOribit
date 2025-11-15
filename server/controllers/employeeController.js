@@ -9,7 +9,7 @@ export const getEmployees = async (req, res) => {
   try {
     const employees = await Employee.find()
       .populate("managerId", "firstName lastName email");
-
+    console.log("Fetched Employees:", employees);
     res.json(employees);
   } catch (err) {
     console.error("Get Employees Error:", err);
@@ -170,6 +170,50 @@ export const deleteEmployee = async (req, res) => {
     res.json({ message: "Employee deleted successfully" });
   } catch (err) {
     console.error("Delete Employee Error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const promoteEmployee = async (req, res) => {
+  try {
+    const employee = await Employee.findById(req.params.id ); //populate userId
+    if(!employee.userId){
+      return  res.status(400).json({ message: "Employee must have a user account to be promoted to manager." });
+    }
+    const userId = employee.userId;
+    const user = await User.findByIdAndUpdate(userId , { role: "manager" }, { new: true });
+    console.log("Updated User Role:", user);
+    if (!employee)
+      return res.status(404).json({ message: "Employee not found" });
+
+    employee.isManager = true;
+    await employee.save();
+
+    res.json({ message: "Employee promoted to manager successfully", employee });
+  } catch (err) {
+    console.error("Promote Employee Error:", err);
+    res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const demoteEmployee = async (req, res) => {
+  try {
+    const employee = await Employee.findById(req.params.id );
+    if(!employee.userId){
+      return  res.status(400).json({ message: "Employee must have a user account to be demoted from manager." });
+    }
+    const userId = employee.userId;
+    const user = await User.findByIdAndUpdate(userId , { role: "employee" }, { new: true });
+    console.log("Updated User Role:", user);
+    if (!employee)
+      return res.status(404).json({ message: "Employee not found" });
+
+    employee.isManager = false;
+    await employee.save();
+
+    res.json({ message: "Employee demoted from manager successfully", employee });
+  } catch (err) {
+    console.error("Demote Employee Error:", err);
     res.status(500).json({ message: "Server error" });
   }
 };

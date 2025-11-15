@@ -16,9 +16,9 @@ export const registerUser = async (req, res) => {
     const existingUser = await User.findOne({ email });
     if (existingUser)
       return res.status(400).json({ message: "User already exists" });
-
+    console.log("Hashing password");
     const hash = await bcrypt.hash(password, 10);
-
+    
     const newUser = await User.create({
       email,
       passwordHash: hash,
@@ -26,9 +26,15 @@ export const registerUser = async (req, res) => {
       employeeId: employeeId || null,
     });
 
+    const updatedEmployee = await Employee.findByIdAndUpdate(
+      employeeId,
+      { userId: newUser._id },
+      { new: true } // returns updated document
+    );
+    console.log("User registered successfully:", newUser, updatedEmployee);
     res.status(201).json({
       message: "User registered successfully",
-      user: { id: newUser._id, email: newUser.email, role: newUser.role },
+      user: { id: newUser._id, email: newUser.email, role: newUser.role , password: password},
     });
   } catch (error) {
     console.error("Register Error:", error);
@@ -44,7 +50,8 @@ export const loginUser = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     const isMatch = await bcrypt.compare(password, user.passwordHash);
-    if (!isMatch) return res.status(401).json({ message: "Invalid credentials" });
+    if (!isMatch)
+      return res.status(401).json({ message: "Invalid credentials" });
 
     const token = generateToken(user._id);
 
@@ -63,7 +70,6 @@ export const loginUser = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
-
 
 export const getMe = async (req, res) => {
   try {
@@ -104,3 +110,4 @@ export const seedAdmin = async (req, res) => {
     res.status(500).json({ message: "Server error" });
   }
 };
+
