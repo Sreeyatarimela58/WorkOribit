@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useMemo } from "react";
+import { useToast } from "../../context/Toast.jsx";
 // Assuming your components are in these paths
 // import  AddEmployeeModal  from '../../components/admin/AddEmployeeModal.jsx';
 // import  EditEmployeeModal  from '../../components/admin/EditEmployeeModal.jsx';
 import { useEmployeeStore } from "../../store/useEmployeeStore.js";
+import useAuthStore from "../../store/authStore.js";
 
 // --- 1. Add Employee Modal Component ---
 const AddEmployeeModal = ({ isOpen, onClose, onAddEmployee, managers }) => {
@@ -608,8 +610,9 @@ export default function EmployeeManagement() {
   const [isAddModalOpen, setIsAddModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedEmployee, setSelectedEmployee] = useState(null);
-
   // --- Zustand Store Integration ---
+  const { signup } = useAuthStore();
+  const { showToast } = useToast();
   const {
     employees,
     getEmployees,
@@ -638,17 +641,15 @@ export default function EmployeeManagement() {
       userId: emp.userId || null,
       location: emp.location,
       // Handle populated manager data
-      managerName:
-        emp.managerId
-          ? `${emp.managerId.firstName} ${emp.managerId.lastName}`
-          : "N/A",
+      managerName: emp.managerId
+        ? `${emp.managerId.firstName} ${emp.managerId.lastName}`
+        : "N/A",
       // Store the manager's ID for the edit modal dropdown
-      managerId:
-        emp.managerId
-          ? emp.managerId._id
-          : typeof emp.managerId === "string"
-          ? emp.managerId
-          : null,
+      managerId: emp.managerId
+        ? emp.managerId._id
+        : typeof emp.managerId === "string"
+        ? emp.managerId
+        : null,
       // Generate placeholder image
       img: `https://placehold.co/100x100/4F46E5/FFFFFF?text=${emp.firstName[0]}${emp.lastName[0]}`,
     }));
@@ -684,7 +685,36 @@ export default function EmployeeManagement() {
     indexOfFirstEmployee,
     indexOfLastEmployee
   );
+  function generateStrongPassword(length = 8) {
+    const chars =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+";
 
+    let password = "";
+
+    for (let i = 0; i < length; i++) {
+      const randomIndex = Math.floor(Math.random() * chars.length);
+      password += chars[randomIndex];
+    }
+
+    return password;
+  }
+
+  const createLoginForEmployee = async (email, role, employeeId) => {
+    // Implement the logic to create a login for the employee
+    try {
+      const password = generateStrongPassword();
+      let status = await signup(email, password, role, employeeId);
+      if(status.ok){
+        await getEmployees();
+        showToast(`Login created for ${email}`, "success");
+      } else {
+        showToast(`Failed to create login for ${email}`, "error");
+      }
+    } catch (error) {
+      console.error("Error creating login: ", error);
+      showToast("Failed to create login.", "error");
+    }
+  };
   // Page change handlers
   const goToNextPage = () => {
     setCurrentPage((prev) => Math.min(prev + 1, totalPages));
@@ -987,7 +1017,16 @@ export default function EmployeeManagement() {
                           {!emp.userId && (
                             <>
                               <span className="text-gray-600">•</span>
-                              <button className="hover:text-green-500">
+                              <button
+                                className="hover:text-green-500"
+                                onClick={() =>
+                                  createLoginForEmployee(
+                                    emp.email,
+                                    "employee",
+                                    emp.id
+                                  )
+                                }
+                              >
                                 <span className="material-symbols-outlined text-base">
                                   key
                                 </span>

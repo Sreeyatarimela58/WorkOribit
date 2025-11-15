@@ -26,9 +26,11 @@ const useAuthStore = create((set, get) => ({
   // SIGNUP (TO BE USED BY ADMIN ONLY)
   signup: async (email, password , role , employeeId) => {
     try {
-      await axios.post("/auth/register", { email, password, role , employeeId });
-      return { ok: true };
+      console.log("Signup called with: ", email, password, role , employeeId);
+      let res = await axios.post("/auth/register", { email, password, role , employeeId });
+      return { ok: true , message: res.data.message };
     } catch (err) {
+      console.error("Signup error: ", err.message);
       set({ error: err.response?.data?.message || "Signup failed" });
       return { ok: false };
     }
@@ -52,6 +54,7 @@ const useAuthStore = create((set, get) => ({
     localStorage.removeItem("token");
     set({ user: null, token: null });
   },
+  
 }));
 
 export default useAuthStore;
