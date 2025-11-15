@@ -12,6 +12,7 @@ const employeeSchema = new mongoose.Schema(
       enum: DEPARTMENTS,      // ⬅ HERE - Enforce enum
       required: false,
     },
+    isManager: { type: Boolean, default: false },
     managerId: { type: mongoose.Schema.Types.ObjectId, ref: "Employee" },
     jobTitle: { type: String },
     location: { type: String },
