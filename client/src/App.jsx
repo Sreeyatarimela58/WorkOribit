@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import AppRoutes from "./routes/AppRoutes";
 import useAuthStore from "./store/authStore";
-
+import { ToastProvider } from "./context/Toast";
 export default function App() {
   const fetchUser = useAuthStore((state) => state.fetchUser);
 
@@ -9,6 +9,9 @@ export default function App() {
     fetchUser(); // auto fetch logged-in user
   }, []);
 
-  return <AppRoutes />;
+  return (
+    <ToastProvider>
+      <AppRoutes />
+    </ToastProvider>
+  );
 }
-
