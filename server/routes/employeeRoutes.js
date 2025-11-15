@@ -7,6 +7,8 @@ import {
   createEmployee,
   updateEmployee,
   deleteEmployee,
+  promoteEmployee,
+  demoteEmployee
 } from "../controllers/employeeController.js";
 
 const router = express.Router();
@@ -165,11 +167,70 @@ const router = express.Router();
  *         description: Employee not found
  */
 
+/**
+ * @openapi
+ * /api/employees/{id}/promote:
+ *   patch:
+ *     tags:
+ *       - Employees
+ *     summary: Promote an employee to manager (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Employee ID
+ *     responses:
+ *       200:
+ *         description: Employee promoted successfully
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Admin access required
+ *       404:
+ *         description: Employee not found
+ */
+
+/**
+ * @openapi
+ * /api/employees/{id}/demote:
+ *   patch:
+ *     tags:
+ *       - Employees
+ *     summary: Demote a manager to regular employee (Admin only)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Employee ID
+ *     responses:
+ *       200:
+ *         description: Employee demoted successfully
+ *       400:
+ *         description: Validation error
+ *       401:
+ *         description: Unauthorized
+ *       403:
+ *         description: Forbidden - Admin access required
+ *       404:
+ *         description: Employee not found
+ */
 router.use(protect);
 router.get("/", getEmployees);
 router.get("/:id", getEmployeeById);
 router.post("/", authorizeRoles("admin"), createEmployee);
 router.put("/:id", authorizeRoles("admin"), updateEmployee);
 router.delete("/:id", authorizeRoles("admin"), deleteEmployee);
+router.patch("/:id", authorizeRoles("admin"), promoteEmployee);
+router.patch("/:id/demote", authorizeRoles("admin"), demoteEmployee);
 
 export default router;
