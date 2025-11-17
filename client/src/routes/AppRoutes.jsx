@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 import Login from "../pages/auth/LoginSignup.jsx";
 import EmployeeManagement from "../pages/admin/EmployeeManagement.jsx";
+import AdminLayout from "../components/layout/AdminLayout.jsx";
+import OnboardingTemplatesPage from "../pages/admin/Onboarding.jsx";
 // import ManagerDashboard from "../pages/manager/ManagerDashboard.jsx";
 // import EmployeeDashboard from "../pages/employee/EmployeeDashboard.jsx";
 // import Directory from "../pages/shared/Directory.jsx";
@@ -14,13 +16,19 @@ export default function AppRoutes() {
         <Route path="/login" element={<Login />} />
 
         {<Route
-          path="/admin/employees"
-          element={
-            <PrivateRoute roles={["admin"]}>
-              <EmployeeManagement />
-            </PrivateRoute>
-          }
-        />
+  path="/admin"
+  element={
+    <PrivateRoute roles={["admin"]}>
+      <AdminLayout /> 
+    </PrivateRoute>
+  }
+>
+  <Route path="employees" element={<EmployeeManagement />} />
+  <Route path="onboarding" element={<OnboardingTemplatesPage />} />
+  {/* <Route path="projects" element={<ProjectManagement />} />
+  <Route path="settings" element={<AdminSettings />} /> */}
+</Route>
+
         /* 
         <Route
           path="/manager/*"
