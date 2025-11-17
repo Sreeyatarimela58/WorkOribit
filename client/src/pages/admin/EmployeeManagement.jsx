@@ -5,6 +5,7 @@ import { useToast } from "../../context/Toast.jsx";
 // import  EditEmployeeModal  from '../../components/admin/EditEmployeeModal.jsx';
 import { useEmployeeStore } from "../../store/useEmployeeStore.js";
 import useAuthStore from "../../store/authStore.js";
+import Sidebar from "../../components/admin/Sidebar.jsx";
 
 // --- 1. Add Employee Modal Component ---
 const AddEmployeeModal = ({ isOpen, onClose, onAddEmployee, managers }) => {
@@ -756,64 +757,7 @@ export default function EmployeeManagement() {
       </style>
 
       {/* Sidebar */}
-      <aside className="flex h-screen sticky top-0 w-64 flex-col justify-between border-r border-gray-800 bg-gray-900 p-4">
-        {/* ... Sidebar content ... (unchanged) */}
-        <div className="flex flex-col gap-8">
-          <div className="flex items-center gap-3 px-3 py-2">
-            <div className="size-8 text-[#5048e5]">
-              <svg
-                fill="none"
-                viewBox="0 0 48 48"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  clipRule="evenodd"
-                  d="M24 4H6V17.3333V30.6667H24V44H42V30.6667V17.3333H24V4Z"
-                  fill="currentColor"
-                  fillRule="evenodd"
-                ></path>
-              </svg>
-            </div>
-            <h1 className="text-xl font-bold text-white">WorkOrbit</h1>
-          </div>
-          <nav className="flex flex-col gap-2">
-            <a
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-gray-800"
-              href="#"
-            >
-              <span className="material-symbols-outlined text-gray-300">
-                dashboard
-              </span>
-              <p className="text-sm font-medium">Dashboard</p>
-            </a>
-            <a
-              className="flex items-center gap-3 rounded-lg bg-[#5048e5]/20 px-3 py-2 text-[#5048e5]"
-              href="#"
-            >
-              <span className="material-symbols-outlined">groups</span>
-              <p className="font-semibold text-sm">Employees</p>
-            </a>
-            <a
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-gray-800"
-              href="#"
-            >
-              <span className="material-symbols-outlined text-gray-300">
-                dynamic_form
-              </span>
-              <p className="text-sm font-medium">Onboarding</p>
-            </a>
-            <a
-              className="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-gray-800"
-              href="#"
-            >
-              <span className="material-symbols-outlined text-gray-300">
-                settings
-              </span>
-              <p className="text-sm font-medium">Settings</p>
-            </a>
-          </nav>
-        </div>
-      </aside>
+      <Sidebar />
 
       {/* Main Content */}
       <div className="flex flex-1 flex-col overflow-y-auto h-screen">
